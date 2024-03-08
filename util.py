@@ -162,7 +162,10 @@ class Notices:
         self.success_num = 0
         self.config = getConfig()['notice']
         try:
-            with open("./temp/sub.json", 'r') as f:
+            with open("./temp/sub.json", 'r', encoding='utf-8') as f:
+                #报错：不能识别GBK
+                #报错UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 29: illegal multibyte sequence
+                #增加了, encoding='utf-8'
                 self.subscription = json.load(f)
         finally:
             if f:

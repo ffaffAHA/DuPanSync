@@ -2,6 +2,8 @@ import base64
 import json
 import re
 import urllib
+
+import time
 from time import sleep
 
 # import qrcode_terminal
@@ -90,12 +92,20 @@ class DuUtil:
             logger.info("自动登录成功")
             print("自动登录成功")
             # TODO: token失效时的处理，目前还未测试出token失效时间，待补充
+            # 两个月时间
         finally:
             if f:
                 f.close()
             if self._cookie is not None:
                 source = self._driver.page_source
-                self._bdstoken = re.findall(r'bdstoken":"(.*?)"', source)[0]
+                bdstoken_match = re.findall(r'bdstoken":"(.*?)"', source)
+                if bdstoken_match:
+                    self._bdstoken = bdstoken_match[0]
+                else:
+                    # 处理未找到匹配的情况，比如设置默认值或引发异常
+                    # self._bdstoken = "e820037179220a15bd660f310bd3f8ebb6477c12e5b6d1a97fe7d2a211a8c9dd"  # 设置默认值为None或者其他适当的值
+                    # 或者引发一个异常，提示未找到匹配
+                    raise ValueError("把/temp/cookie.json删除,之后运行mainpy并在logs里点击链接重新扫码登陆")
                 logger.debug("bdstoken获取成功：{}".format(self._bdstoken))
 
     def _getCookie(self):
@@ -122,9 +132,28 @@ class DuUtil:
         WebDriverWait(self._driver, 5, 0.5).until(
             expected_conditions.presence_of_element_located((By.CLASS_NAME, "tang-pass-qrcode-img")))
         # TODO：等待两秒让他加载出来二维码，此处可以优化判断链接是否是加载中
-        sleep(2)
+        sleep(5)
+
+
+        # img_path = './二维码.png'
+        # Chrome.save_screenshot(img_path) # 一次截图：形成全图
+        # QR = Chrome.find_element_by_class_name('tang-pass-qrcode-img') #定位二维码位置
+        # left = QR.location['x']  # 区块截图左上角在网页中的x坐标
+        # top = QR.location['y']  # 区块截图左上角在网页中的y坐标
+        # right = left + QR.size['width']  # 区块截图右下角在网页中的x坐标
+        # bottom = top + QR.size['height']  # 区块截图右下角在网页中的y坐标
+        # from PIL import Image
+        # picture = Image.open(img_path)
+        # picture = picture.crop((left, top, right, bottom))  # 二次截图：形成区块截图
+        # picture.save(img_path)
+        # print("--已下载完成二维码")
+        # img=Image.open(img_path)
+        # img.show()
+        # time.sleep(25) #等待二维码扫描时间
+      
+
         login_qrcode_url = self._driver.find_element(By.CLASS_NAME, "tang-pass-qrcode-img")
-        logger.debug("获取登录二维码，二维码链接: {}".format(login_qrcode_url))
+        logger.debug("获取登录二维码，二维码链接: {}".format(login_qrcode_url.get_attribute("src")))
         # 保存图片
         login_qrcode_url.screenshot(self._config['qrCodeImagePath'])
         print("请扫描二维码登录，如果无法扫描请扫描程序目录下" + self._config['qrCodeImagePath'])

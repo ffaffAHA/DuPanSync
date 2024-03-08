@@ -15,7 +15,7 @@ def getSyncData():
     :return:
     """
     try:
-        with open(SyncPath, 'r') as f:
+        with open(SyncPath, 'r',encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError as e:
         d = []
@@ -34,7 +34,7 @@ def setSyncData(data):
     :return:
     """
     try:
-        with open(SyncPath, 'w') as f:
+        with open(SyncPath, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         return True
     except BaseException as e:
@@ -68,18 +68,18 @@ def selectGroupDir(du_util: DuUtil):
             print("\t[{0}] {1}".format(i, groups[i - 1]["name"]))
 
         if group_page > 1:
-            print("\t[<] 上一页\t\t当前第{0}页".format(group_page))
+            print("\t[d] 上一页\t\t当前第{0}页".format(group_page))
 
         if len(groups) == group_num:
-            print("\t[>] 下一页\t\t当前第{0}页".format(group_page))
+            print("\t[p] 下一页\t\t当前第{0}页".format(group_page))
 
         group_ipt = input()
         if group_ipt == '0':
             return False
-        if group_ipt == '<':
+        if group_ipt == 'd':
             group_page -= 1
             continue
-        if group_ipt == '>':
+        if group_ipt == 'p':
             group_page += 1
             continue
         try:
@@ -118,7 +118,7 @@ def selectGroupDir(du_util: DuUtil):
 
     path_ipt = None
     path_page = 1
-    path_num = 50
+    path_num = 80
     select_dir = root_dir['file_list'][0]
     select_dir['path'] = urllib.parse.unquote(select_dir['path'])
     while path_ipt is None:
@@ -133,9 +133,9 @@ def selectGroupDir(du_util: DuUtil):
                 print("显示群文件目录时出错")
                 print(e)
         if path_page > 1:
-            print("\t[<] 上一页\t\t当前第{}页".format(path_page))
+            print("\t[d] 上一页\t\t当前第{}页".format(path_page))
         if len(path_list) == path_num:
-            print("\t[>] 下一页\t\t当前第{}页".format(path_page))
+            print("\t[p] 下一页\t\t当前第{}页".format(path_page))
 
         path_ipt = input()
 
@@ -143,10 +143,10 @@ def selectGroupDir(du_util: DuUtil):
             return selectGroupDir(du_util)
         if path_ipt == '1':
             continue
-        if path_ipt == '>':
+        if path_ipt == 'd':
             path_page += 1
             continue
-        if path_ipt == '<':
+        if path_ipt == 'p':
             path_page -= 1
             continue
         try:
@@ -191,9 +191,9 @@ def selectPanDir(du_util: DuUtil):
                 logger.error("显示网盘目录错误：{}".format(e))
                 print("显示网盘目录错误")
         if page > 1:
-            print("\t[<] 上一页\t\t当前第{}页".format(page))
+            print("\t[d] 上一页\t\t当前第{}页".format(page))
         if len(file_list) == num:
-            print("\t[>] 下一页\t\t当前第{}页".format(page))
+            print("\t[p] 下一页\t\t当前第{}页".format(page))
 
         ipt_num = input()
 
@@ -201,10 +201,10 @@ def selectPanDir(du_util: DuUtil):
             return False
         if ipt_num == '1':
             continue
-        if ipt_num == '<':
+        if ipt_num == 'd':
             page -= 1
             continue
-        if ipt_num == '>':
+        if ipt_num == 'p':
             page += 1
             continue
         try:

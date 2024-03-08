@@ -1,0 +1,64 @@
+
+VSCode执行的命令
+	E:\VSCodePython\DuPanSync>python -c "from main import shellSync;shellSync()"
+
+
+#####转timer.dat；windows cmd
+
+@echo off
+ E:
+ cd VSCodePython\DuPanSync && python -c "from main import shellSync;shellSync()" || pause
+exit
+
+方法1：创建一个批处理文件的快捷方式，然后右键快捷方式，选择属性，点击高级，勾选“以管理员身份运行”2。这样，每次双击快	捷方式时，就会以管理员权限运行批处理文件。
+
+方法2：在命令行中，使用runas命令来运行批处理文件，并指定管理员账户和密码3。例如，如果您的批处理文件名为test.bat，您	可以使用以下命令：
+
+	runas /user:administrator "test.bat"
+
+	这个命令会要求您输入管理员账户的密码，输入正确的密码后，批处理文件就会以管理员权限运行。
+
+	################需要管理员权限#####   弃用   #########
+
+
+
+#####vbs
+##python环境变量path靠前出错（忽略）
+
+' 创建一个WScript.Shell对象，用于执行操作系统命令和访问系统资源
+Set objShell = CreateObject("WScript.Shell")
+
+' 在当前文件夹执行以下命令
+' 执行Python命令，从main模块中导入并调用shellSync函数
+' 第一个参数是要执行的命令，第二个参数是窗口的显示方式，1表示显示，第三个参数是是否等待命令执行完毕，True表示等待
+objShell.Run "python -c ""from main import shellSync;shellSync()""", 1, True
+
+' 释放WScript.Shell对象，结束脚本的执行
+Set objShell = Nothing
+	######################## 不需要管理员权限###########
+
+
+
+####定时1
+cmd运行以下
+schtasks /create /tn test_task /tr ‪E:\VSCodePython\re_time_day\timer.bat /sc DAILY /st 08:00:00
+
+
+
+
+bat 命令编写完成后，请把文件保存为以 .bat 结尾的文件，创建快捷方式，属性：管理员权限。
+
+放入开始菜单中的"启动"文件夹内即可完成开机自启动？？？？
+
+
+
+使用Windows任务计划程序，创建一个定时任务，指定要运行的脚本文件和执行的时间。例如，如果您想要每天早上8点运行一个名为test.vbs的脚本，您可以按照以下步骤操作：
+
+打开控制面板，选择系统和安全，然后选择管理工具。
+双击任务计划程序，点击操作栏上的创建基本任务。
+输入任务的名称和描述，例如test，然后点击下一步。
+选择任务的触发器，例如每天，然后点击下一步。
+输入任务的开始日期和时间，例如2021年12月1日，8:00:00，然后点击下一步。
+选择任务的操作，例如启动程序，然后点击下一步。
+输入或浏览要运行的脚本文件的路径，例如C:\test.vbs，然后点击下一步。
+查看任务的摘要，然后点击完成。
