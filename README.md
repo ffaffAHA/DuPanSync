@@ -3,20 +3,17 @@
 ## 补充了Windows桌面快捷方式，添加了.vbs文件。
 
 # Windows利用.vbs运行,添加如下
-' 创建一个WScript.Shell对象，用于执行操作系统命令和访问系统资源
-Set objShell = CreateObject("WScript.Shell")
 
-' 在当前文件夹执行以下命令
-' 执行Python命令，从main模块中导入并调用shellSync函数
-' 第一个参数是要执行的命令，第二个参数是窗口的显示方式，1表示显示，第三个参数是是否等待命令执行完毕，True表示等待
-objShell.Run "python -c ""from main import shellSync;shellSync()""", 1, True
-
-' 释放WScript.Shell对象，结束脚本的执行
-Set objShell = Nothing
-
-
-使用Windows任务计划程序，创建一个定时任务，指定要运行的脚本文件和执行的时间。例如，如果您想要每天早上8点运行一个名为test.vbs的脚本，您可以按照以下步骤操作：
-
+   ' 创建一个WScript.Shell对象，用于执行操作系统命令和访问系统资源
+   Set objShell = CreateObject("WScript.Shell")
+   
+   ' 在当前文件夹执行以下命令
+   ' 执行Python命令，从main模块中导入并调用shellSync函数
+   ' 第一个参数是要执行的命令，第二个参数是窗口的显示方式，1表示显示，第三个参数是是否等待命令执行完毕，True表示等待
+   objShell.Run "python -c ""from main import shellSync;shellSync()""", 1, True
+   
+   ' 释放WScript.Shell对象，结束脚本的执行
+   Set objShell = Nothing
 # 定时1
 ## cmd运行
    schtasks /create /tn test_task /tr ‪E:\VSCodePython\DuPanSync\run.vbs - 快捷方式.lnk /sc DAILY /st 08:00:00
