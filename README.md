@@ -73,7 +73,8 @@
 6. 根据命令行中的提示进行选择（主要懒得再做个页面）
 7. 第一次登录时如果扫不了控制台的二维码就去扫保存到本地的二维码图片
    - 默认地址在`/temp/login.png`
-   - `config.json`里的`qrCodeImagePath`可以改默认保存地址
+   - `config.json`里的`qrCodeImagePath`可以改默认保存
+   - 添加补充说明：在日志里找到二维码链接，CTRL+鼠标左键进入浏览器扫码登录。
 8. 设置好后可以使用下面的命令直接执行同步方法，不显示操作菜单
    ```shell
    python -c "from main import shellSync;shellSync()"
